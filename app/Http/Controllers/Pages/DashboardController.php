@@ -4,12 +4,11 @@ namespace App\Http\Controllers\Pages;
 
 use App\Http\Controllers\Controller as ParentController;
 use App\Models\User;
+use Eod;
 use Illuminate\Support\Facades\Cache;
-use Inertia\Inertia;
-
 // use RadicalLoop\Eod\Config;
 // use RadicalLoop\Eod\Eod;
-use Eod;
+use Inertia\Inertia;
 
 class DashboardController extends ParentController
 {
