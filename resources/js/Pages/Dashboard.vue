@@ -17,6 +17,11 @@ const props = defineProps({
     required: true,
     default: () => [],
   },
+  livestocks: {
+    type: Array,
+    required: true,
+    default: () => [],
+  },
 })
 
 const page = usePage()
@@ -148,30 +153,14 @@ const stocks = ref([
       <section class="mb-10">
         <h2 class="mb-4 text-xl font-semibold text-[var(--color-text)]">Stock Widgets</h2>
         <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          <StockWidget
-            :stock="stocks[0]"
-            :src="stocks[0].icon"
-            :alt="stocks[0].name"
-            :bg-color="stocks[0].bgColor"
-            size="lg" />
-          <StockWidget
-            :stock="stocks[1]"
-            :src="stocks[1].icon"
-            :alt="stocks[1].name"
-            :bg-color="stocks[1].bgColor"
-            size="lg" />
-          <StockWidget
-            :stock="stocks[2]"
-            :src="stocks[2].icon"
-            :alt="stocks[2].name"
-            :bg-color="stocks[2].bgColor"
-            size="lg" />
-          <StockWidget
-            :stock="stocks[3]"
-            :src="stocks[3].icon"
-            :alt="stocks[3].name"
-            :bg-color="stocks[3].bgColor"
-            size="lg" />
+          <template v-for="(livestock, index) in livestocks" :key="livestock.name + '_' + index">
+            <StockWidget
+              :stock="livestock"
+              :src="livestock.icon"
+              :alt="livestock.name"
+              size="lg"
+            />
+          </template>
         </div>
       </section>
 
