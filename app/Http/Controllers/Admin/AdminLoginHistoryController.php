@@ -17,7 +17,6 @@ class AdminLoginHistoryController extends Controller
         $this->middleware('permission:view-login-history');
     }
 
-
     public function index(Request $request)
     {
         $result = $this->dataTable->process(
@@ -33,10 +32,10 @@ class AdminLoginHistoryController extends Controller
             request: $request,
             config: [
                 'searchable' => ['user.name', 'user_agent'],
-                'sortable' => [
+                'sortable'   => [
                     'login_at' => ['type' => 'simple'],
                 ],
-                'resource' => 'login_history',
+                'resource'  => 'login_history',
                 'transform' => function ($item) {
                     $agent = new Agent();
                     $agent->setUserAgent($item->user_agent);
@@ -64,7 +63,6 @@ class AdminLoginHistoryController extends Controller
             'filters'      => $result['filters'],
         ]);
     }
-
 
     public function bulkDestroy(Request $request)
     {

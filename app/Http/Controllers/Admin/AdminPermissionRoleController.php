@@ -22,7 +22,6 @@ class AdminPermissionRoleController extends Controller
         $this->middleware('permission:view-permissions-roles');
     }
 
-
     public function index(Request $request)
     {
         $permissions = Permission::query()

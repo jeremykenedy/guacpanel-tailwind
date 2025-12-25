@@ -22,7 +22,6 @@ class AdminAppNotificationsController extends Controller
         $this->middleware('permission:manage-notifications');
     }
 
-
     public function index(Request $request)
     {
         $result = $this->dataTable->process(
@@ -54,12 +53,12 @@ class AdminAppNotificationsController extends Controller
             request: $request,
             config: [
                 'searchable' => ['title', 'message', 'user.name', 'user.email'],
-                'sortable' => [
-                    'title' => ['type' => 'simple'],
-                    'type' => ['type' => 'simple'],
+                'sortable'   => [
+                    'title'      => ['type' => 'simple'],
+                    'type'       => ['type' => 'simple'],
                     'created_at' => ['type' => 'simple'],
                 ],
-                'resource' => 'notifications',
+                'resource'  => 'notifications',
                 'transform' => function ($item) {
                     $item->created_at_diff = $item->created_at?->diffForHumans();
                     $item->scheduled_on_diff = $item->scheduled_on?->diffForHumans();
@@ -78,7 +77,6 @@ class AdminAppNotificationsController extends Controller
         ]);
     }
 
-
     public function create()
     {
         $users = User::query()
@@ -91,7 +89,6 @@ class AdminAppNotificationsController extends Controller
             'users' => $users,
         ]);
     }
-
 
     public function store(StoreAdminAppNotificationRequest $request)
     {
@@ -126,7 +123,6 @@ class AdminAppNotificationsController extends Controller
             ->with('success', 'Notification created.');
     }
 
-
     public function edit(string $id)
     {
         $notification = AppNotification::query()->whereKey($id)->firstOrFail();
@@ -142,7 +138,6 @@ class AdminAppNotificationsController extends Controller
             'users'        => $users,
         ]);
     }
-
 
     public function update(UpdateAdminAppNotificationRequest $request, string $id)
     {
@@ -176,7 +171,6 @@ class AdminAppNotificationsController extends Controller
             ->with('success', 'Notification updated.');
     }
 
-
     public function destroy(string $id)
     {
         $notification = AppNotification::query()->whereKey($id)->firstOrFail();
@@ -191,7 +185,6 @@ class AdminAppNotificationsController extends Controller
         return redirect()->route('admin.notifications.index')
             ->with('success', 'Notification deleted.');
     }
-
 
     public function bulkDestroy(Request $request)
     {
@@ -228,7 +221,6 @@ class AdminAppNotificationsController extends Controller
         return redirect()->route('admin.notifications.index')
             ->with('success', 'Notifications deleted.');
     }
-
 
     public function deleted(Request $request)
     {

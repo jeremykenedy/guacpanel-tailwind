@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
+use App\Models\Session;
+use App\Services\DataTableService;
 use Carbon\Carbon;
+use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
-use App\Models\Session;
 use Jenssegers\Agent\Agent;
-use Illuminate\Http\Request;
-use App\Services\DataTableService;
-use App\Http\Controllers\Controller;
 
 class AdminSessionController extends Controller
 {
@@ -19,13 +19,12 @@ class AdminSessionController extends Controller
         $this->middleware('permission:view-sessions');
     }
 
-
     public function index(Request $request): Response
     {
         if (config('session.driver') !== 'database') {
             return Inertia::render('Admin/IndexSessionPage', [
                 'sessions' => [],
-                'filters' => $this->dataTable->buildFilters($request),
+                'filters'  => $this->dataTable->buildFilters($request),
             ]);
         }
 
@@ -38,22 +37,21 @@ class AdminSessionController extends Controller
             request: $request,
             config: [
                 'searchable' => ['user.name', 'user.email'],
-                'sortable' => [
+                'sortable'   => [
                     'last_activity' => ['type' => 'simple'],
-                    'user.name' => ['type' => 'relationship', 'relation' => 'user', 'column' => 'name'],
-                    'user.email' => ['type' => 'relationship', 'relation' => 'user', 'column' => 'email'],
+                    'user.name'     => ['type' => 'relationship', 'relation' => 'user', 'column' => 'name'],
+                    'user.email'    => ['type' => 'relationship', 'relation' => 'user', 'column' => 'email'],
                 ],
-                'resource' => 'sessions',
-                'transform' => fn($session) => $this->transformSession($session, $currentSessionId),
+                'resource'  => 'sessions',
+                'transform' => fn ($session) => $this->transformSession($session, $currentSessionId),
             ]
         );
 
         return Inertia::render('Admin/IndexSessionPage', [
             'sessions' => $result['data'],
-            'filters' => $result['filters'],
+            'filters'  => $result['filters'],
         ]);
     }
-
 
     public function destroy($sessionId)
     {
@@ -70,7 +68,6 @@ class AdminSessionController extends Controller
         return redirect()->back();
     }
 
-
     public function destroyAllForUser($userId)
     {
         $currentSessionId = request()->session()->getId();
@@ -83,7 +80,6 @@ class AdminSessionController extends Controller
 
         return redirect()->back();
     }
-
 
     private function transformSession(Session $session, string $currentSessionId): array
     {

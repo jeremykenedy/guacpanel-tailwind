@@ -2,9 +2,9 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\AppNotification;
 use Closure;
 use Illuminate\Http\Request;
-use App\Models\AppNotification;
 use Symfony\Component\HttpFoundation\Response;
 
 class ShareSystemNotifications
@@ -26,11 +26,11 @@ class ShareSystemNotifications
                 ->whereNull('deleted_at')
                 ->latest()
                 ->get()
-                ->map(fn($notification) => [
-                    'id' => $notification->id,
-                    'title' => $notification->title,
+                ->map(fn ($notification) => [
+                    'id'      => $notification->id,
+                    'title'   => $notification->title,
                     'message' => $notification->message,
-                    'type' => $notification->type,
+                    'type'    => $notification->type,
                 ]);
 
             inertia()->share('systemNotifications', $systemNotifications);

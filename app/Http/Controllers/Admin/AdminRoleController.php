@@ -22,7 +22,6 @@ class AdminRoleController extends Controller
         $this->middleware(['auth', 'permission:manage-roles']);
     }
 
-
     public function index(Request $request)
     {
         $result = $this->dataTable->process(
@@ -30,11 +29,11 @@ class AdminRoleController extends Controller
             request: $request,
             config: [
                 'searchable' => ['name', 'description', 'permissions.name'],
-                'sortable' => [
-                    'name' => ['type' => 'simple'],
+                'sortable'   => [
+                    'name'       => ['type' => 'simple'],
                     'created_at' => ['type' => 'simple'],
                 ],
-                'resource' => 'roles',
+                'resource'  => 'roles',
                 'transform' => function ($role) {
                     return [
                         'id'           => $role->id,
@@ -60,7 +59,6 @@ class AdminRoleController extends Controller
         ]);
     }
 
-
     public function store(Request $request): RedirectResponse
     {
         $validatedData = $request->validate([
@@ -70,7 +68,7 @@ class AdminRoleController extends Controller
                 'max:255',
                 'min:3',
                 Rule::unique('roles', 'name'),
-                'not_in:' . $this->getProtectedRolesForValidation(),
+                'not_in:'.$this->getProtectedRolesForValidation(),
                 'regex:/^[a-zA-Z][a-zA-Z0-9\s\_\-]*$/', // Must start with a letter
             ],
             'description'   => ['nullable', 'string', 'max:255'],
@@ -90,12 +88,11 @@ class AdminRoleController extends Controller
         return redirect()->route('admin.role.index')->with('success', 'Role created successfully.');
     }
 
-
     public function update(Request $request, Role $role): RedirectResponse
     {
         if ($this->isProtectedRole($role->name)) {
             return redirect()->route('admin.role.index')
-                ->with('error', 'Cannot modify system role: ' . $role->name);
+                ->with('error', 'Cannot modify system role: '.$role->name);
         }
 
         $validatedData = $request->validate([
@@ -105,7 +102,7 @@ class AdminRoleController extends Controller
                 'max:255',
                 'min:3',
                 Rule::unique('roles', 'name')->ignore($role->id),
-                'not_in:' . $this->getProtectedRolesForValidation(),
+                'not_in:'.$this->getProtectedRolesForValidation(),
                 'regex:/^[a-zA-Z][a-zA-Z0-9\s\_\-]*$/', // Must start with a letter
             ],
             'description'   => ['nullable', 'string', 'max:255'],
@@ -125,14 +122,13 @@ class AdminRoleController extends Controller
         return redirect()->route('admin.role.index')->with('success', 'Role updated successfully.');
     }
 
-
     public function destroy(string $id): RedirectResponse
     {
         $role = Role::findOrFail($id);
 
         if ($this->isProtectedRole($role->name)) {
             return redirect()->route('admin.role.index')
-                ->with('error', 'Cannot delete system role: ' . $role->name);
+                ->with('error', 'Cannot delete system role: '.$role->name);
         }
 
         $role->delete();
