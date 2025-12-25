@@ -32,7 +32,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/terms', [PageController::class, 'terms'])->name('terms');
 
-require __DIR__ . '/auth.php';
+require __DIR__.'/auth.php';
 
 // Authenticated Routes
 Route::middleware([
@@ -316,11 +316,11 @@ Route::prefix('_test')->middleware(['auth', 'ensure-local-testing'])->group(func
         }
 
         return response()->json([
-            'ok'     => true,
+            'ok'      => true,
             'sent_to' => $to,
             'deleted' => $deleted,
-            'cutoff' => $cutoff->toDateTimeString(),
-            'days'   => $days,
+            'cutoff'  => $cutoff->toDateTimeString(),
+            'days'    => $days,
         ]);
     });
 });

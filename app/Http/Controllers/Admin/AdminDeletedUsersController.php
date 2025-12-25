@@ -17,7 +17,6 @@ class AdminDeletedUsersController extends Controller
         $this->middleware('permission:view-users');
     }
 
-
     public function index(Request $request)
     {
         $result = $this->dataTable->process(
@@ -27,12 +26,12 @@ class AdminDeletedUsersController extends Controller
             request: $request,
             config: [
                 'searchable' => ['name', 'email', 'roles.name'],
-                'sortable' => [
-                    'name' => ['type' => 'simple'],
-                    'email' => ['type' => 'simple'],
+                'sortable'   => [
+                    'name'       => ['type' => 'simple'],
+                    'email'      => ['type' => 'simple'],
                     'deleted_at' => ['type' => 'simple'],
                 ],
-                'resource' => 'deleted_users',
+                'resource'  => 'deleted_users',
                 'transform' => function ($user) {
                     return [
                         'id'                            => $user->id,
@@ -76,7 +75,6 @@ class AdminDeletedUsersController extends Controller
         ]);
     }
 
-
     public function restore(Request $request, $id)
     {
         $this->authorize('edit-users');
@@ -84,7 +82,7 @@ class AdminDeletedUsersController extends Controller
         $user = User::onlyTrashed()->findOrFail($id);
         $user->restore();
         $deletedUsersCount = User::query()->onlyDeleted()->count();
-        $msg = $user->name . '\'s account restored successfully';
+        $msg = $user->name.'\'s account restored successfully';
 
         if ($deletedUsersCount > 0) {
             return redirect()->back()->with('success', $msg);
@@ -92,7 +90,6 @@ class AdminDeletedUsersController extends Controller
 
         return redirect()->route('admin.user.index')->with('success', $msg);
     }
-
 
     public function destroy(Request $request, $id)
     {
@@ -107,7 +104,7 @@ class AdminDeletedUsersController extends Controller
         $user->forceDelete();
 
         $deletedUsersCount = User::query()->onlyDeleted()->count();
-        $msg = $user->name . '\'s account permanently destroyed successfully';
+        $msg = $user->name.'\'s account permanently destroyed successfully';
 
         if ($deletedUsersCount > 0) {
             return redirect()->back()->with('success', $msg);
@@ -115,7 +112,6 @@ class AdminDeletedUsersController extends Controller
 
         return redirect()->route('admin.user.index')->with('success', $msg);
     }
-
 
     public function destroyAll(Request $request)
     {

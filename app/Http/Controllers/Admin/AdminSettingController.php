@@ -15,12 +15,10 @@ class AdminSettingController extends Controller
         $this->middleware('permission:manage-settings');
     }
 
-
     public function index()
     {
         return Inertia::render('Admin/IndexSettingPage');
     }
-
 
     public function show()
     {

@@ -15,7 +15,6 @@ class AdminAuditController extends Controller
         $this->middleware('permission:view-audits');
     }
 
-
     public function index(Request $request)
     {
         $result = $this->dataTable->process(
@@ -27,11 +26,11 @@ class AdminAuditController extends Controller
             request: $request,
             config: [
                 'searchable' => ['event', 'auditable_type', 'user.name'],
-                'sortable' => [
-                    'event' => ['type' => 'simple'],
+                'sortable'   => [
+                    'event'      => ['type' => 'simple'],
                     'created_at' => ['type' => 'simple'],
                 ],
-                'resource' => 'audits',
+                'resource'  => 'audits',
                 'transform' => function ($audit) {
                     return [
                         'id'             => $audit->id,

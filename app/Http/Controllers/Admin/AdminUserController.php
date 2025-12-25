@@ -19,7 +19,6 @@ class AdminUserController extends Controller
         $this->middleware('permission:view-users');
     }
 
-
     public function index(Request $request)
     {
         $result = $this->dataTable->process(
@@ -27,12 +26,12 @@ class AdminUserController extends Controller
             request: $request,
             config: [
                 'searchable' => ['name', 'email', 'roles.name'],
-                'sortable' => [
-                    'name' => ['type' => 'simple'],
-                    'email' => ['type' => 'simple'],
+                'sortable'   => [
+                    'name'       => ['type' => 'simple'],
+                    'email'      => ['type' => 'simple'],
                     'created_at' => ['type' => 'simple'],
                 ],
-                'resource' => 'users',
+                'resource'  => 'users',
                 'transform' => function ($user) {
                     return [
                         'id'                            => $user->id,
@@ -79,7 +78,6 @@ class AdminUserController extends Controller
         ]);
     }
 
-
     public function store(Request $request)
     {
         $validatedData = $request->validate([
@@ -96,7 +94,6 @@ class AdminUserController extends Controller
 
         return redirect()->back()->with('success', __('notifications.admin.new_user_created_successfully'));
     }
-
 
     public function edit(Request $request, $id)
     {
@@ -131,7 +128,7 @@ class AdminUserController extends Controller
                 'restore_date_formatted'        => $user->restore_date_formatted,
                 'restore_date_full'             => $user->restore_date_full,
                 'roles'                         => $user->roles,
-                'permissions'                   => $user->permissions->map(fn($permission) => [
+                'permissions'                   => $user->permissions->map(fn ($permission) => [
                     'id'   => $permission->id,
                     'name' => $permission->name,
                 ]),
@@ -194,7 +191,6 @@ class AdminUserController extends Controller
 
         return redirect()->back()->with('success', __('notifications.admin.user_account_updated_successfully'));
     }
-
 
     public function destroy($id)
     {

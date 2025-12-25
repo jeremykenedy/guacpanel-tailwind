@@ -16,7 +16,6 @@ class AdminHealthStatusController extends Controller
         $this->middleware('permission:view-health');
     }
 
-
     public function index(ResultStore $resultStore)
     {
         $checkResults = $resultStore->latestResults();
@@ -44,7 +43,6 @@ class AdminHealthStatusController extends Controller
             ],
         ]);
     }
-
 
     public function runHealthChecks()
     {

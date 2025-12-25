@@ -17,7 +17,6 @@ class AdminPermissionController extends Controller
         $this->middleware('permission:manage-permissions');
     }
 
-
     public function store(Request $request)
     {
         $validatedData = $request->validate([
@@ -26,7 +25,7 @@ class AdminPermissionController extends Controller
                 'string',
                 'regex:/^[a-z]+(?:-[a-z]+)*$/i', // Hyphens only and letters only
                 Rule::unique(Permission::class),
-                'not_in:' . $this->getProtectedPermissionsForValidation(),
+                'not_in:'.$this->getProtectedPermissionsForValidation(),
             ],
             'description' => 'nullable|string|max:255',
         ], [
@@ -38,12 +37,11 @@ class AdminPermissionController extends Controller
         session()->flash('success', 'Permission created successfully.');
     }
 
-
     public function update(Request $request, Permission $permission)
     {
         if ($this->isProtectedPermission($permission->name)) {
             return redirect()->back()
-                ->with('error', 'Cannot modify system permission: ' . $permission->name);
+                ->with('error', 'Cannot modify system permission: '.$permission->name);
         }
 
         $validatedData = $request->validate([
@@ -52,7 +50,7 @@ class AdminPermissionController extends Controller
                 'string',
                 'regex:/^[a-z]+(?:-[a-z]+)*$/i', // Hyphens only and letters only
                 Rule::unique('permissions', 'name')->ignore($permission->id),
-                'not_in:' . $this->getProtectedPermissionsForValidation(),
+                'not_in:'.$this->getProtectedPermissionsForValidation(),
             ],
             'description' => 'nullable|string|max:255',
         ], [
@@ -64,7 +62,6 @@ class AdminPermissionController extends Controller
         session()->flash('success', 'Permission updated successfully.');
     }
 
-
     public function destroy(string $id)
     {
         $permission = Permission::findOrFail($id);
@@ -72,7 +69,7 @@ class AdminPermissionController extends Controller
         // Prevent deleting protected system permissions
         if ($this->isProtectedPermission($permission->name)) {
             return redirect()->back()
-                ->with('error', 'Cannot delete system permission: ' . $permission->name);
+                ->with('error', 'Cannot delete system permission: '.$permission->name);
         }
 
         $permission->delete();
