@@ -34,7 +34,7 @@ class TypesenseController extends Controller
             $response = Http::timeout(3)
                 ->withHeaders([
                     'X-TYPESENSE-API-KEY' => $typesenseApiKey,
-                    'Content-Type' => 'application/json',
+                    'Content-Type'        => 'application/json',
                 ])
                 ->post("{$typesenseProtocol}://{$typesenseHost}:{$typesensePort}/multi_search", $request->all());
 

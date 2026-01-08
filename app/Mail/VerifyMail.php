@@ -28,7 +28,7 @@ class VerifyMail extends Mailable
                 'appname' => config('app.name'),
             ]),
         )->markdown('emails.verify', [
-            'user' => $this->user,
+            'user'            => $this->user,
             'verificationUrl' => $this->verificationUrl,
         ]);
     }

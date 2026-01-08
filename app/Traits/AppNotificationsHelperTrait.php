@@ -18,16 +18,16 @@ trait AppNotificationsHelperTrait
 
         if (!$user) {
             return [
-                'data' => [],
+                'data'  => [],
                 'links' => [],
-                'meta' => [
-                    'total' => 0,
-                    'per_page' => 0,
+                'meta'  => [
+                    'total'        => 0,
+                    'per_page'     => 0,
                     'current_page' => 1,
-                    'last_page' => 1,
-                    'from' => null,
-                    'to' => null,
-                    'total_all' => 0,
+                    'last_page'    => 1,
+                    'from'         => null,
+                    'to'           => null,
+                    'total_all'    => 0,
                 ],
             ];
         }
@@ -92,7 +92,7 @@ trait AppNotificationsHelperTrait
         }
 
         if ($search !== '') {
-            $like = '%' . str_replace('%', '\\%', $search) . '%';
+            $like = '%'.str_replace('%', '\\%', $search).'%';
             $query->where(function ($q) use ($like) {
                 $q->where('an.title', 'like', $like)->orWhere('an.message', 'like', $like);
             });
@@ -160,37 +160,37 @@ trait AppNotificationsHelperTrait
                 $dismissedAt = $row->dismissed_at;
 
                 return [
-                    'id' => (string) $row->id,
-                    'scope' => $row->scope,
-                    'type' => $row->type,
-                    'title' => $row->title,
-                    'message' => $row->message,
-                    'data' => $row->data,
-                    'is_read' => (bool) $readAt,
-                    'read_at' => $readAt ? Carbon::parse($readAt)->toISOString() : null,
+                    'id'           => (string) $row->id,
+                    'scope'        => $row->scope,
+                    'type'         => $row->type,
+                    'title'        => $row->title,
+                    'message'      => $row->message,
+                    'data'         => $row->data,
+                    'is_read'      => (bool) $readAt,
+                    'read_at'      => $readAt ? Carbon::parse($readAt)->toISOString() : null,
                     'is_dismissed' => (bool) $dismissedAt,
                     'dismissed_at' => $dismissedAt ? Carbon::parse($dismissedAt)->toISOString() : null,
-                    'created_at' => optional($row->created_at)?->toISOString(),
+                    'created_at'   => optional($row->created_at)?->toISOString(),
                 ];
             }),
         );
 
         return [
-            'data' => $paginator->items(),
+            'data'  => $paginator->items(),
             'links' => [
                 'first' => $paginator->url(1),
-                'last' => $paginator->url($paginator->lastPage()),
-                'prev' => $paginator->previousPageUrl(),
-                'next' => $paginator->nextPageUrl(),
+                'last'  => $paginator->url($paginator->lastPage()),
+                'prev'  => $paginator->previousPageUrl(),
+                'next'  => $paginator->nextPageUrl(),
             ],
             'meta' => [
-                'total' => $paginator->total(),
-                'per_page' => $paginator->perPage(),
+                'total'        => $paginator->total(),
+                'per_page'     => $paginator->perPage(),
                 'current_page' => $paginator->currentPage(),
-                'last_page' => $paginator->lastPage(),
-                'from' => $paginator->firstItem(),
-                'to' => $paginator->lastItem(),
-                'total_all' => $totalAll,
+                'last_page'    => $paginator->lastPage(),
+                'from'         => $paginator->firstItem(),
+                'to'           => $paginator->lastItem(),
+                'total_all'    => $totalAll,
             ],
         ];
     }
@@ -250,7 +250,7 @@ trait AppNotificationsHelperTrait
     {
         $request->merge([
             'action' => $validated['action'] ?? null,
-            'ids' => $validated['ids'] ?? [],
+            'ids'    => $validated['ids'] ?? [],
         ]);
 
         $this->bulkNotificationsForUser($request);
@@ -297,12 +297,12 @@ trait AppNotificationsHelperTrait
         AppNotificationRead::updateOrCreate(
             [
                 'app_notification_id' => (string) $notification->id,
-                'user_id' => $userId,
+                'user_id'             => $userId,
             ],
             [
-                'read_at' => $now,
+                'read_at'        => $now,
                 'u_del_notif_at' => null,
-                'deleted_at' => null,
+                'deleted_at'     => null,
             ],
         );
 
@@ -338,12 +338,12 @@ trait AppNotificationsHelperTrait
         AppNotificationRead::updateOrCreate(
             [
                 'app_notification_id' => (string) $notification->id,
-                'user_id' => $userId,
+                'user_id'             => $userId,
             ],
             [
-                'read_at' => null,
+                'read_at'        => null,
                 'u_del_notif_at' => null,
-                'deleted_at' => null,
+                'deleted_at'     => null,
             ],
         );
 
@@ -389,7 +389,7 @@ trait AppNotificationsHelperTrait
             ->whereNull('anr.dismissed_at')
             ->whereNull('anr.read_at')
             ->pluck('an.id')
-            ->map(fn($id) => (string) $id);
+            ->map(fn ($id) => (string) $id);
 
         if ($ids->isEmpty()) {
             $this->broadcastBulk($userId, 'read-all');
@@ -399,14 +399,14 @@ trait AppNotificationsHelperTrait
 
         $rows = $ids
             ->map(
-                fn($id) => [
+                fn ($id) => [
                     'app_notification_id' => (string) $id,
-                    'user_id' => $userId,
-                    'read_at' => $now,
-                    'u_del_notif_at' => null,
-                    'deleted_at' => null,
-                    'created_at' => $now,
-                    'updated_at' => $now,
+                    'user_id'             => $userId,
+                    'read_at'             => $now,
+                    'u_del_notif_at'      => null,
+                    'deleted_at'          => null,
+                    'created_at'          => $now,
+                    'updated_at'          => $now,
                 ],
             )
             ->all();
@@ -438,11 +438,11 @@ trait AppNotificationsHelperTrait
         AppNotificationRead::updateOrCreate(
             [
                 'app_notification_id' => (string) $notification->id,
-                'user_id' => $userId,
+                'user_id'             => $userId,
             ],
             [
                 'dismissed_at' => $now,
-                'deleted_at' => null,
+                'deleted_at'   => null,
             ],
         );
 
@@ -478,11 +478,11 @@ trait AppNotificationsHelperTrait
         AppNotificationRead::updateOrCreate(
             [
                 'app_notification_id' => (string) $notification->id,
-                'user_id' => $userId,
+                'user_id'             => $userId,
             ],
             [
                 'dismissed_at' => null,
-                'deleted_at' => null,
+                'deleted_at'   => null,
             ],
         );
 
@@ -527,7 +527,7 @@ trait AppNotificationsHelperTrait
             })
             ->whereNull('anr.dismissed_at')
             ->pluck('an.id')
-            ->map(fn($id) => (string) $id);
+            ->map(fn ($id) => (string) $id);
 
         if ($ids->isEmpty()) {
             $this->broadcastBulk($userId, 'dismiss-all');
@@ -537,14 +537,14 @@ trait AppNotificationsHelperTrait
 
         $rows = $ids
             ->map(
-                fn($id) => [
+                fn ($id) => [
                     'app_notification_id' => (string) $id,
-                    'user_id' => $userId,
-                    'dismissed_at' => $now,
-                    'u_del_notif_at' => null,
-                    'deleted_at' => null,
-                    'created_at' => $now,
-                    'updated_at' => $now,
+                    'user_id'             => $userId,
+                    'dismissed_at'        => $now,
+                    'u_del_notif_at'      => null,
+                    'deleted_at'          => null,
+                    'created_at'          => $now,
+                    'updated_at'          => $now,
                 ],
             )
             ->all();
@@ -566,7 +566,7 @@ trait AppNotificationsHelperTrait
 
         $action = (string) $request->input('action');
 
-        $ids = collect((array) $request->input('ids', []))->map(fn($id) => (string) $id)->unique()->values();
+        $ids = collect((array) $request->input('ids', []))->map(fn ($id) => (string) $id)->unique()->values();
 
         if ($ids->isEmpty()) {
             return;
@@ -599,10 +599,10 @@ trait AppNotificationsHelperTrait
             ->map(function ($r) use ($action, $now, $userId) {
                 $payload = [
                     'app_notification_id' => (string) $r->id,
-                    'user_id' => $userId,
-                    'deleted_at' => null,
-                    'created_at' => $now,
-                    'updated_at' => $now,
+                    'user_id'             => $userId,
+                    'deleted_at'          => null,
+                    'created_at'          => $now,
+                    'updated_at'          => $now,
                 ];
 
                 if ($action === 'read') {
@@ -661,7 +661,7 @@ trait AppNotificationsHelperTrait
             AppNotificationRead::updateOrCreate(
                 [
                     'app_notification_id' => (string) $notification->id,
-                    'user_id' => $userId,
+                    'user_id'             => $userId,
                 ],
                 [
                     'u_del_notif_at' => $now,
@@ -690,7 +690,7 @@ trait AppNotificationsHelperTrait
         AppNotificationRead::updateOrCreate(
             [
                 'app_notification_id' => (string) $notification->id,
-                'user_id' => $userId,
+                'user_id'             => $userId,
             ],
             [
                 'u_del_notif_at' => $now,

@@ -57,20 +57,20 @@ class User extends Authenticatable implements Auditable, MustVerifyEmail
     ];
 
     protected $casts = [
-        'email_verified_at' => 'datetime',
-        'password' => 'hashed',
-        'password_expiry_at' => 'datetime',
-        'password_changed_at' => 'datetime',
+        'email_verified_at'     => 'datetime',
+        'password'              => 'hashed',
+        'password_expiry_at'    => 'datetime',
+        'password_changed_at'   => 'datetime',
         'force_password_change' => 'boolean',
-        'disable_account' => 'boolean', // This is the user disabling their account.
-        'profile_image_type' => 'string', // This is a string to later allow other types.
-        'account_locked' => 'boolean', // This is plug of kicking the user out of the app.
-        'restore_token' => 'string',
-        'auto_destroy' => 'boolean',
-        'created_at' => 'datetime',
-        'updated_at' => 'datetime',
-        'deleted_at' => 'datetime',
-        'restore_date' => 'datetime',
+        'disable_account'       => 'boolean', // This is the user disabling their account.
+        'profile_image_type'    => 'string', // This is a string to later allow other types.
+        'account_locked'        => 'boolean', // This is plug of kicking the user out of the app.
+        'restore_token'         => 'string',
+        'auto_destroy'          => 'boolean',
+        'created_at'            => 'datetime',
+        'updated_at'            => 'datetime',
+        'deleted_at'            => 'datetime',
+        'restore_date'          => 'datetime',
     ];
 
     protected $appends = ['created_at_formatted'];
@@ -251,7 +251,7 @@ class User extends Authenticatable implements Auditable, MustVerifyEmail
 
     public function autoDestroyDate(): Attribute
     {
-        return Attribute::make(get: fn() => $this->calculateAutoDestroyDate());
+        return Attribute::make(get: fn () => $this->calculateAutoDestroyDate());
     }
 
     public function autoDestroyDateFormatted(): Attribute
@@ -345,8 +345,8 @@ class User extends Authenticatable implements Auditable, MustVerifyEmail
     public function toSearchableArray(): array
     {
         return array_merge($this->toArray(), [
-            'id' => (string) $this->id,
-            'created_at' => $this->created_at->timestamp,
+            'id'              => (string) $this->id,
+            'created_at'      => $this->created_at->timestamp,
             'collection_name' => 'users',
         ]);
     }

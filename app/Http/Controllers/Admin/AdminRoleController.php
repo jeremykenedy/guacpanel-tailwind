@@ -28,21 +28,21 @@ class AdminRoleController extends Controller
             request: $request,
             config: [
                 'searchable' => ['name', 'description', 'permissions.name'],
-                'sortable' => [
-                    'name' => ['type' => 'simple'],
+                'sortable'   => [
+                    'name'       => ['type' => 'simple'],
                     'created_at' => ['type' => 'simple'],
                 ],
-                'resource' => 'roles',
+                'resource'  => 'roles',
                 'transform' => function ($role) {
                     return [
-                        'id' => $role->id,
-                        'name' => $role->name,
-                        'description' => $role->description,
-                        'created_at' => $role->created_at?->diffForHumans(),
+                        'id'           => $role->id,
+                        'name'         => $role->name,
+                        'description'  => $role->description,
+                        'created_at'   => $role->created_at?->diffForHumans(),
                         'is_protected' => $this->isProtectedRole($role->name),
-                        'permissions' => $role->permissions->map(function ($permission) {
+                        'permissions'  => $role->permissions->map(function ($permission) {
                             return [
-                                'id' => $permission->id,
+                                'id'   => $permission->id,
                                 'name' => $permission->name,
                             ];
                         }),
@@ -52,9 +52,9 @@ class AdminRoleController extends Controller
         );
 
         return Inertia::render('Admin/PermissionRole/IndexPermissionRolePage', [
-            'roles' => $result['data'],
+            'roles'       => $result['data'],
             'permissions' => Permission::all(),
-            'filters' => $result['filters'],
+            'filters'     => $result['filters'],
         ]);
     }
 
@@ -67,16 +67,16 @@ class AdminRoleController extends Controller
                 'max:255',
                 'min:3',
                 Rule::unique('roles', 'name'),
-                'not_in:' . $this->getProtectedRolesForValidation(),
+                'not_in:'.$this->getProtectedRolesForValidation(),
                 'regex:/^[a-zA-Z][a-zA-Z0-9\s\_\-]*$/', // Must start with a letter
             ],
-            'description' => ['nullable', 'string', 'max:255'],
-            'permissions' => ['nullable', 'array'],
+            'description'   => ['nullable', 'string', 'max:255'],
+            'permissions'   => ['nullable', 'array'],
             'permissions.*' => ['exists:permissions,id'],
         ]);
 
         $role = Role::create([
-            'name' => $validatedData['name'],
+            'name'        => $validatedData['name'],
             'description' => $validatedData['description'],
         ]);
 
@@ -92,7 +92,7 @@ class AdminRoleController extends Controller
         if ($this->isProtectedRole($role->name)) {
             return redirect()
                 ->route('admin.role.index')
-                ->with('error', 'Cannot modify system role: ' . $role->name);
+                ->with('error', 'Cannot modify system role: '.$role->name);
         }
 
         $validatedData = $request->validate([
@@ -102,16 +102,16 @@ class AdminRoleController extends Controller
                 'max:255',
                 'min:3',
                 Rule::unique('roles', 'name')->ignore($role->id),
-                'not_in:' . $this->getProtectedRolesForValidation(),
+                'not_in:'.$this->getProtectedRolesForValidation(),
                 'regex:/^[a-zA-Z][a-zA-Z0-9\s\_\-]*$/', // Must start with a letter
             ],
-            'description' => ['nullable', 'string', 'max:255'],
-            'permissions' => ['nullable', 'array'],
+            'description'   => ['nullable', 'string', 'max:255'],
+            'permissions'   => ['nullable', 'array'],
             'permissions.*' => ['exists:permissions,id'],
         ]);
 
         $role->update([
-            'name' => $validatedData['name'],
+            'name'        => $validatedData['name'],
             'description' => $validatedData['description'],
         ]);
 
@@ -129,7 +129,7 @@ class AdminRoleController extends Controller
         if ($this->isProtectedRole($role->name)) {
             return redirect()
                 ->route('admin.role.index')
-                ->with('error', 'Cannot delete system role: ' . $role->name);
+                ->with('error', 'Cannot delete system role: '.$role->name);
         }
 
         $role->delete();

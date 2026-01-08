@@ -26,8 +26,8 @@ class BrowserSessionController extends Controller
 
             foreach ($sessionRecords as $session) {
                 $sessions[] = [
-                    'id' => $session->id ?? '',
-                    'agent' => $this->formatAgent($session->user_agent ?? ''),
+                    'id'         => $session->id ?? '',
+                    'agent'      => $this->formatAgent($session->user_agent ?? ''),
                     'lastActive' => $session->last_activity
                         ? Carbon::createFromTimestamp($session->last_activity)->diffForHumans()
                         : '',
@@ -37,7 +37,7 @@ class BrowserSessionController extends Controller
         }
 
         return Inertia::render('UserAccount/IndexSessionPage', [
-            'user' => $user,
+            'user'     => $user,
             'sessions' => $sessions,
         ]);
     }
@@ -52,9 +52,9 @@ class BrowserSessionController extends Controller
         $agent->setUserAgent($userAgent);
 
         return [
-            'device' => $agent->device() ?: ($agent->isDesktop() ? 'Desktop' : 'Unknown'),
+            'device'   => $agent->device() ?: ($agent->isDesktop() ? 'Desktop' : 'Unknown'),
             'platform' => $agent->platform() ?: 'Unknown',
-            'browser' => $agent->browser() ?: 'Unknown',
+            'browser'  => $agent->browser() ?: 'Unknown',
         ];
     }
 

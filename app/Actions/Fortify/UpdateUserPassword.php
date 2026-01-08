@@ -22,7 +22,7 @@ class UpdateUserPassword implements UpdatesUserPasswords
             $input,
             [
                 'current_password' => ['required', 'string', 'current_password:web'],
-                'password' => $this->passwordRules(),
+                'password'         => $this->passwordRules(),
             ],
             [
                 'current_password.current_password' => __(

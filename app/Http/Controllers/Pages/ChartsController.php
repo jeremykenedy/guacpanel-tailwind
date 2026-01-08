@@ -40,8 +40,8 @@ class ChartsController extends ParentController
 
         return Inertia::render('Charts', [
             'financialMetrics' => [
-                'months' => $months,
-                'income' => $income,
+                'months'  => $months,
+                'income'  => $income,
                 'expense' => $expense,
             ],
         ]);

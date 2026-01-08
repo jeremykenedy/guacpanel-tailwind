@@ -33,7 +33,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/terms', [PageController::class, 'terms'])->name('terms');
 
-require __DIR__ . '/auth.php';
+require __DIR__.'/auth.php';
 
 // Authenticated Routes
 Route::middleware(['web', 'auth', 'auth.session'])->group(function () {
@@ -393,11 +393,11 @@ Route::prefix('_test')
             }
 
             return response()->json([
-                'ok' => true,
+                'ok'      => true,
                 'sent_to' => $to,
                 'deleted' => $deleted,
-                'cutoff' => $cutoff->toDateTimeString(),
-                'days' => $days,
+                'cutoff'  => $cutoff->toDateTimeString(),
+                'days'    => $days,
             ]);
         });
     });

@@ -25,9 +25,9 @@ class AdminSettingController extends Controller
         $systemSettings = Setting::first() ?? new Setting();
 
         return Inertia::render('Admin/IndexManageSettingPage', [
-            'systemSettings' => $systemSettings,
+            'systemSettings'   => $systemSettings,
             'canResetPassword' => Features::enabled(Features::resetPasswords()),
-            'canRegister' => Features::enabled(Features::registration()),
+            'canRegister'      => Features::enabled(Features::registration()),
             'twoFactorEnabled' => Features::enabled(Features::twoFactorAuthentication()),
         ]);
     }
@@ -35,8 +35,8 @@ class AdminSettingController extends Controller
     public function update(Request $request)
     {
         $validatedData = $request->validate([
-            'password_expiry' => ['boolean'],
-            'passwordless_login' => ['boolean'],
+            'password_expiry'           => ['boolean'],
+            'passwordless_login'        => ['boolean'],
             'two_factor_authentication' => ['boolean'],
         ]);
 

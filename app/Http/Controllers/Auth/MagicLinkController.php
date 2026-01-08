@@ -39,12 +39,12 @@ class MagicLinkController extends Controller
         $this->checkPasswordlessEnabled();
 
         $validated = $request->validate([
-            'name' => ['required', 'string', 'max:255'],
+            'name'  => ['required', 'string', 'max:255'],
             'email' => ['required', 'email', 'unique:users,email'],
         ]);
 
         // Rate limiting for registration
-        $key = 'magic_link_registration_' . $request->ip();
+        $key = 'magic_link_registration_'.$request->ip();
         if (RateLimiter::tooManyAttempts($key, 3)) {
             $seconds = RateLimiter::availableIn($key);
 
@@ -55,8 +55,8 @@ class MagicLinkController extends Controller
         RateLimiter::hit($key, 300); // 5 minutes
 
         $user = User::create([
-            'name' => $validated['name'],
-            'email' => $validated['email'],
+            'name'              => $validated['name'],
+            'email'             => $validated['email'],
             'email_verified_at' => now(),
         ]);
 
@@ -75,7 +75,7 @@ class MagicLinkController extends Controller
         ]);
 
         // Rate limiting for login attempts
-        $key = 'magic_link_login_' . $request->ip();
+        $key = 'magic_link_login_'.$request->ip();
         if (RateLimiter::tooManyAttempts($key, 5)) {
             $seconds = RateLimiter::availableIn($key);
 
@@ -110,7 +110,7 @@ class MagicLinkController extends Controller
         Cache::put(
             "magic_link:{$token}",
             [
-                'user_id' => $user->id,
+                'user_id'    => $user->id,
                 'created_at' => now()->timestamp,
             ],
             now()->addMinutes($expiryMinutes),

@@ -28,17 +28,17 @@ class UserAccountController extends Controller
         abort_if($user->id !== Auth::id(), 403, 'You are not authorized to access this profile.');
 
         $data = [
-            'user' => $user,
-            'qrCodeSvg' => $user->two_factor_secret ? $user->twoFactorQrCodeSvg() : null,
+            'user'          => $user,
+            'qrCodeSvg'     => $user->two_factor_secret ? $user->twoFactorQrCodeSvg() : null,
             'recoveryCodes' => $user->two_factor_secret
                 ? json_decode(decrypt($user->two_factor_recovery_codes, true))
                 : null,
-            'profileEnabled' => Route::has('user-profile-information.update'),
-            'twoFactorEnabled' => Route::has('two-factor.enable'),
-            'passwordEnabled' => Route::has('user-password.update'),
-            'sessions' => $this->getUserSessionsData($user, $request->session()->getId()),
+            'profileEnabled'    => Route::has('user-profile-information.update'),
+            'twoFactorEnabled'  => Route::has('two-factor.enable'),
+            'passwordEnabled'   => Route::has('user-password.update'),
+            'sessions'          => $this->getUserSessionsData($user, $request->session()->getId()),
             'deactivateEnabled' => config('guacpanel.user.account.deactivate_enabled'),
-            'deleteEnabled' => config('guacpanel.user.account.delete_enabled'),
+            'deleteEnabled'     => config('guacpanel.user.account.delete_enabled'),
         ];
 
         return Inertia::render('UserAccount/IndexPage', $data);
@@ -49,8 +49,8 @@ class UserAccountController extends Controller
         $user = Auth::user();
 
         $data = [
-            'user' => $user,
-            'qrCodeSvg' => $user->two_factor_secret ? $user->twoFactorQrCodeSvg() : null,
+            'user'          => $user,
+            'qrCodeSvg'     => $user->two_factor_secret ? $user->twoFactorQrCodeSvg() : null,
             'recoveryCodes' => $user->two_factor_secret
                 ? json_decode(decrypt($user->two_factor_recovery_codes, true))
                 : null,
@@ -87,9 +87,9 @@ class UserAccountController extends Controller
 
         $now = now();
         $user->update([
-            'password' => Hash::make($validatedData['password']),
+            'password'            => Hash::make($validatedData['password']),
             'password_changed_at' => $now,
-            'password_expiry_at' => $now->copy()->addMonths(3),
+            'password_expiry_at'  => $now->copy()->addMonths(3),
         ]);
 
         session()->flash('success', 'Password has been updated successfully.');
@@ -102,7 +102,7 @@ class UserAccountController extends Controller
         $user = Auth::user();
 
         return Inertia::render('UserAccount/IndexSessionPage', [
-            'user' => $user,
+            'user'     => $user,
             'sessions' => $this->getUserSessionsData($user, $request->session()->getId()),
         ]);
     }
@@ -120,9 +120,9 @@ class UserAccountController extends Controller
 
             foreach ($sessionRecords as $session) {
                 $sessions[] = [
-                    'id' => $session->id ?? '',
-                    'agent' => $this->formatAgent($session->user_agent ?? ''),
-                    'ip' => $session->ip_address ?? '',
+                    'id'         => $session->id ?? '',
+                    'agent'      => $this->formatAgent($session->user_agent ?? ''),
+                    'ip'         => $session->ip_address ?? '',
                     'lastActive' => $session->last_activity
                         ? Carbon::createFromTimestamp($session->last_activity)->diffForHumans()
                         : '',
@@ -144,9 +144,9 @@ class UserAccountController extends Controller
         $agent->setUserAgent($userAgent);
 
         return [
-            'device' => $agent->device() ?: ($agent->isDesktop() ? 'Desktop' : 'Unknown'),
+            'device'   => $agent->device() ?: ($agent->isDesktop() ? 'Desktop' : 'Unknown'),
             'platform' => $agent->platform() ?: 'Unknown',
-            'browser' => $agent->browser() ?: 'Unknown',
+            'browser'  => $agent->browser() ?: 'Unknown',
         ];
     }
 

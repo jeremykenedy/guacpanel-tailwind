@@ -26,13 +26,12 @@ class AdminPermissionController extends Controller
                     'string',
                     'regex:/^[a-z]+(?:-[a-z]+)*$/i', // Hyphens only and letters only
                     Rule::unique(Permission::class),
-                    'not_in:' . $this->getProtectedPermissionsForValidation(),
+                    'not_in:'.$this->getProtectedPermissionsForValidation(),
                 ],
                 'description' => 'nullable|string|max:255',
             ],
             [
-                'name.regex' =>
-                    'Permission name must contain only letters and hyphens in format: resource-action (e.g. posts-edit)',
+                'name.regex'  => 'Permission name must contain only letters and hyphens in format: resource-action (e.g. posts-edit)',
                 'name.not_in' => 'Cannot create permission with this name as it is reserved for system use.',
             ],
         );
@@ -46,7 +45,7 @@ class AdminPermissionController extends Controller
         if ($this->isProtectedPermission($permission->name)) {
             return redirect()
                 ->back()
-                ->with('error', 'Cannot modify system permission: ' . $permission->name);
+                ->with('error', 'Cannot modify system permission: '.$permission->name);
         }
 
         $validatedData = $request->validate(
@@ -56,13 +55,12 @@ class AdminPermissionController extends Controller
                     'string',
                     'regex:/^[a-z]+(?:-[a-z]+)*$/i', // Hyphens only and letters only
                     Rule::unique('permissions', 'name')->ignore($permission->id),
-                    'not_in:' . $this->getProtectedPermissionsForValidation(),
+                    'not_in:'.$this->getProtectedPermissionsForValidation(),
                 ],
                 'description' => 'nullable|string|max:255',
             ],
             [
-                'name.regex' =>
-                    'Permission name must contain only letters and hyphens in format: resource-action (e.g. posts-edit)',
+                'name.regex'  => 'Permission name must contain only letters and hyphens in format: resource-action (e.g. posts-edit)',
                 'name.not_in' => 'Cannot use this name as it is reserved for system use.',
             ],
         );
@@ -79,7 +77,7 @@ class AdminPermissionController extends Controller
         if ($this->isProtectedPermission($permission->name)) {
             return redirect()
                 ->back()
-                ->with('error', 'Cannot delete system permission: ' . $permission->name);
+                ->with('error', 'Cannot delete system permission: '.$permission->name);
         }
 
         $permission->delete();

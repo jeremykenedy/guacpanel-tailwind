@@ -34,13 +34,13 @@ class AppNotification extends Model
     ];
 
     protected $casts = [
-        'data' => 'array',
+        'data'              => 'array',
         'sent_as_scheduled' => 'boolean',
-        'scheduled_on' => 'datetime',
-        'auto_expire_on' => 'datetime',
-        'created_at' => 'datetime',
-        'updated_at' => 'datetime',
-        'deleted_at' => 'datetime',
+        'scheduled_on'      => 'datetime',
+        'auto_expire_on'    => 'datetime',
+        'created_at'        => 'datetime',
+        'updated_at'        => 'datetime',
+        'deleted_at'        => 'datetime',
     ];
 
     public function user()
