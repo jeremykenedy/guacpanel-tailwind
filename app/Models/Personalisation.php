@@ -19,13 +19,13 @@ class Personalisation extends Model
     protected $fillable = ['app_name', 'app_logo', 'app_logo_dark', 'favicon', 'copyright_text'];
 
     protected $casts = [
-        'app_name' => 'string',
-        'app_logo' => 'string',
-        'app_logo_dark' => 'string',
-        'favicon' => 'string',
+        'app_name'       => 'string',
+        'app_logo'       => 'string',
+        'app_logo_dark'  => 'string',
+        'favicon'        => 'string',
         'copyright_text' => 'string',
-        'created_at' => 'datetime',
-        'updated_at' => 'datetime',
+        'created_at'     => 'datetime',
+        'updated_at'     => 'datetime',
     ];
 
     protected static function booted()

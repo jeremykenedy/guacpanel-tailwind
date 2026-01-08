@@ -17,5 +17,6 @@ class AppNotificationRequested
         public string $scope = 'user', // user|system|release
         public string $type = 'info', // info|success|warning|error
         public ?string $title = null,
-    ) {}
+    ) {
+    }
 }

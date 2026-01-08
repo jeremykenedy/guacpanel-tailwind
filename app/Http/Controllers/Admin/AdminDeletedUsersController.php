@@ -25,41 +25,41 @@ class AdminDeletedUsersController extends Controller
             request: $request,
             config: [
                 'searchable' => ['name', 'email', 'roles.name'],
-                'sortable' => [
-                    'name' => ['type' => 'simple'],
-                    'email' => ['type' => 'simple'],
+                'sortable'   => [
+                    'name'       => ['type' => 'simple'],
+                    'email'      => ['type' => 'simple'],
                     'deleted_at' => ['type' => 'simple'],
                 ],
-                'resource' => 'deleted_users',
+                'resource'  => 'deleted_users',
                 'transform' => function ($user) {
                     return [
-                        'id' => $user->id,
-                        'name' => $user->name,
-                        'email' => $user->email,
-                        'email_verified_at' => $user->email_verified_at,
+                        'id'                          => $user->id,
+                        'name'                        => $user->name,
+                        'email'                       => $user->email,
+                        'email_verified_at'           => $user->email_verified_at,
                         'email_verified_at_formatted' => $user->email_verified_at_formatted,
-                        'email_verified_at_full' => $user->email_verified_at_full,
-                        'password_expiry_at' => $user->password_expiry_at,
-                        'password_changed_at' => $user->password_changed_at,
-                        'disable_account' => $user->disable_account,
-                        'force_password_change' => $user->force_password_change,
-                        'created_at_full' => $user->created_at_full,
-                        'created_at' => $user->created_at,
-                        'updated_at' => $user->updated_at,
-                        'deleted_at' => $user->deleted_at,
-                        'created_at_formatted' => $user->created_at_formatted,
-                        'deleted_at_formatted' => $user->deleted_at_formatted,
-                        'deleted_at_full' => $user->deleted_at_full,
-                        'auto_destroy' => $user->auto_destroy,
-                        'auto_destroy_date' => $user->auto_destroy_date,
+                        'email_verified_at_full'      => $user->email_verified_at_full,
+                        'password_expiry_at'          => $user->password_expiry_at,
+                        'password_changed_at'         => $user->password_changed_at,
+                        'disable_account'             => $user->disable_account,
+                        'force_password_change'       => $user->force_password_change,
+                        'created_at_full'             => $user->created_at_full,
+                        'created_at'                  => $user->created_at,
+                        'updated_at'                  => $user->updated_at,
+                        'deleted_at'                  => $user->deleted_at,
+                        'created_at_formatted'        => $user->created_at_formatted,
+                        'deleted_at_formatted'        => $user->deleted_at_formatted,
+                        'deleted_at_full'             => $user->deleted_at_full,
+                        'auto_destroy'                => $user->auto_destroy,
+                        'auto_destroy_date'           => $user->auto_destroy_date,
                         'auto_destroy_date_formatted' => $user->auto_destroy_date_formatted,
-                        'auto_destroy_date_full' => $user->auto_destroy_date_full,
-                        'restore_date' => $user->restore_date,
-                        'restore_date_formatted' => $user->restore_date_formatted,
-                        'restore_date_full' => $user->restore_date_full,
-                        'roles' => $user->roles,
-                        'permissions' => $user->permissions,
-                        'is_superuser' => $user->isSuperUser(),
+                        'auto_destroy_date_full'      => $user->auto_destroy_date_full,
+                        'restore_date'                => $user->restore_date,
+                        'restore_date_formatted'      => $user->restore_date_formatted,
+                        'restore_date_full'           => $user->restore_date_full,
+                        'roles'                       => $user->roles,
+                        'permissions'                 => $user->permissions,
+                        'is_superuser'                => $user->isSuperUser(),
                     ];
                 },
             ],
@@ -81,7 +81,7 @@ class AdminDeletedUsersController extends Controller
         $user = User::onlyTrashed()->findOrFail($id);
         $user->restore();
         $deletedUsersCount = User::query()->onlyDeleted()->count();
-        $msg = $user->name . '\'s account restored successfully';
+        $msg = $user->name.'\'s account restored successfully';
 
         if ($deletedUsersCount > 0) {
             return redirect()->back()->with('success', $msg);
@@ -103,7 +103,7 @@ class AdminDeletedUsersController extends Controller
         $user->forceDelete();
 
         $deletedUsersCount = User::query()->onlyDeleted()->count();
-        $msg = $user->name . '\'s account permanently destroyed successfully';
+        $msg = $user->name.'\'s account permanently destroyed successfully';
 
         if ($deletedUsersCount > 0) {
             return redirect()->back()->with('success', $msg);

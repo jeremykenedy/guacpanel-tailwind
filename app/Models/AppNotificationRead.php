@@ -17,10 +17,10 @@ class AppNotificationRead extends Model
     protected $fillable = ['app_notification_id', 'user_id', 'read_at', 'dismissed_at', 'u_del_notif_at', 'deleted_at'];
 
     protected $casts = [
-        'read_at' => 'datetime',
-        'dismissed_at' => 'datetime',
+        'read_at'        => 'datetime',
+        'dismissed_at'   => 'datetime',
         'u_del_notif_at' => 'datetime',
-        'deleted_at' => 'datetime',
+        'deleted_at'     => 'datetime',
     ];
 
     public function notification(): BelongsTo

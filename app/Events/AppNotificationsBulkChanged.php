@@ -15,7 +15,9 @@ class AppNotificationsBulkChanged implements ShouldBroadcastNow
     use InteractsWithSockets;
     use SerializesModels;
 
-    public function __construct(public string $userId, public string $action, public array $ids = []) {}
+    public function __construct(public string $userId, public string $action, public array $ids = [])
+    {
+    }
 
     public function broadcastOn(): Channel|array
     {
@@ -35,7 +37,7 @@ class AppNotificationsBulkChanged implements ShouldBroadcastNow
     {
         return [
             'action' => $this->action,
-            'ids' => $this->ids,
+            'ids'    => $this->ids,
         ];
     }
 }

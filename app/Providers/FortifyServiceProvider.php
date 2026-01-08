@@ -42,11 +42,11 @@ class FortifyServiceProvider extends ServiceProvider
         Fortify::loginView(function (Request $request) {
             return Inertia::render('Auth/Login', [
                 'canResetPassword' => Features::enabled(Features::resetPasswords()),
-                'canRegister' => Features::enabled(Features::registration()),
-                'status' => $request->session()->get('status'),
-                'providersConfig' => $request->attributes->get('providersConfig'),
-                'demo' => [
-                    'enabled' => config('guacpanel.demo.enabled'),
+                'canRegister'      => Features::enabled(Features::registration()),
+                'status'           => $request->session()->get('status'),
+                'providersConfig'  => $request->attributes->get('providersConfig'),
+                'demo'             => [
+                    'enabled'  => config('guacpanel.demo.enabled'),
                     'username' => config('guacpanel.demo.login.username'),
                     'password' => config('guacpanel.demo.login.password'),
                 ],
@@ -61,26 +61,26 @@ class FortifyServiceProvider extends ServiceProvider
         });
 
         Fortify::requestPasswordResetLinkView(
-            fn(Request $request) => Inertia::render('Auth/ForgotPassword', [
+            fn (Request $request) => Inertia::render('Auth/ForgotPassword', [
                 'status' => $request->session()->get('status'),
             ]),
         );
 
         Fortify::verifyEmailView(
-            fn(Request $request) => Inertia::render('Auth/Verify', [
+            fn (Request $request) => Inertia::render('Auth/Verify', [
                 'status' => $request->session()->get('status'),
             ]),
         );
 
         Fortify::registerView(
-            fn(Request $request) => Inertia::render('Auth/Register', [
+            fn (Request $request) => Inertia::render('Auth/Register', [
                 'providersConfig' => $request->attributes->get('providersConfig'),
             ]),
         );
 
-        Fortify::twoFactorChallengeView(fn() => Inertia::render('Auth/TwoFactorChallenge'));
+        Fortify::twoFactorChallengeView(fn () => Inertia::render('Auth/TwoFactorChallenge'));
 
-        Fortify::confirmPasswordView(fn() => Inertia::render('Auth/ConfirmPassword'));
+        Fortify::confirmPasswordView(fn () => Inertia::render('Auth/ConfirmPassword'));
     }
 
     private function configureRateLimiting(): void
@@ -90,7 +90,7 @@ class FortifyServiceProvider extends ServiceProvider
         });
 
         RateLimiter::for('login', function (Request $request) {
-            $throttleKey = Str::transliterate(Str::lower($request->input(Fortify::username())) . '|' . $request->ip());
+            $throttleKey = Str::transliterate(Str::lower($request->input(Fortify::username())).'|'.$request->ip());
 
             return Limit::perMinute(5)->by($throttleKey);
         });

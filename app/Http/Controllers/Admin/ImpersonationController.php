@@ -32,9 +32,9 @@ class ImpersonationController extends Controller
 
         // Log the impersonation
         Log::info('User impersonation started', [
-            'impersonator_id' => $impersonator->id,
+            'impersonator_id'   => $impersonator->id,
             'impersonator_name' => $impersonator->name,
-            'impersonated_id' => $user->id,
+            'impersonated_id'   => $user->id,
             'impersonated_name' => $user->name,
         ]);
 
@@ -59,6 +59,7 @@ class ImpersonationController extends Controller
         if (!$impersonator) {
             session()->forget(['impersonator_id', 'impersonator_name']);
             Auth::logout();
+
             return redirect()->route('login')->with('error', 'Original user not found.');
         }
 
@@ -66,7 +67,7 @@ class ImpersonationController extends Controller
 
         // Log the end of impersonation
         Log::info('User impersonation ended', [
-            'impersonator_id' => $impersonator->id,
+            'impersonator_id'   => $impersonator->id,
             'impersonator_name' => $impersonator->name,
             'impersonated_name' => $impersonatedName,
         ]);

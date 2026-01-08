@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
+use App\Models\Session;
+use App\Services\DataTableService;
 use Carbon\Carbon;
+use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
-use App\Models\Session;
 use Jenssegers\Agent\Agent;
-use Illuminate\Http\Request;
-use App\Services\DataTableService;
-use App\Http\Controllers\Controller;
 
 class AdminSessionController extends Controller
 {
@@ -23,7 +23,7 @@ class AdminSessionController extends Controller
         if (config('session.driver') !== 'database') {
             return Inertia::render('Admin/IndexSessionPage', [
                 'sessions' => [],
-                'filters' => $this->dataTable->buildFilters($request),
+                'filters'  => $this->dataTable->buildFilters($request),
             ]);
         }
 
@@ -36,19 +36,19 @@ class AdminSessionController extends Controller
             request: $request,
             config: [
                 'searchable' => ['user.name', 'user.email'],
-                'sortable' => [
+                'sortable'   => [
                     'last_activity' => ['type' => 'simple'],
-                    'user.name' => ['type' => 'relationship', 'relation' => 'user', 'column' => 'name'],
-                    'user.email' => ['type' => 'relationship', 'relation' => 'user', 'column' => 'email'],
+                    'user.name'     => ['type' => 'relationship', 'relation' => 'user', 'column' => 'name'],
+                    'user.email'    => ['type' => 'relationship', 'relation' => 'user', 'column' => 'email'],
                 ],
-                'resource' => 'sessions',
-                'transform' => fn($session) => $this->transformSession($session, $currentSessionId),
+                'resource'  => 'sessions',
+                'transform' => fn ($session) => $this->transformSession($session, $currentSessionId),
             ],
         );
 
         return Inertia::render('Admin/IndexSessionPage', [
             'sessions' => $result['data'],
-            'filters' => $result['filters'],
+            'filters'  => $result['filters'],
         ]);
     }
 
@@ -84,19 +84,19 @@ class AdminSessionController extends Controller
         $agent->setUserAgent($session->user_agent ?? '');
 
         return [
-            'id' => $session->id,
+            'id'   => $session->id,
             'user' => [
-                'id' => $session->user?->id,
-                'name' => $session->user?->name,
+                'id'    => $session->user?->id,
+                'name'  => $session->user?->name,
                 'email' => $session->user?->email,
             ],
             'device_info' => [
-                'device' => $agent->device() ?: ($agent->isDesktop() ? 'Desktop' : 'Unknown'),
+                'device'   => $agent->device() ?: ($agent->isDesktop() ? 'Desktop' : 'Unknown'),
                 'platform' => $agent->platform() ?: 'Unknown',
-                'browser' => $agent->browser() ?: 'Unknown',
+                'browser'  => $agent->browser() ?: 'Unknown',
             ],
             'last_active_diff' => Carbon::createFromTimestamp($session->last_activity)->diffForHumans(),
-            'is_current' => $session->id === $currentSessionId,
+            'is_current'       => $session->id === $currentSessionId,
         ];
     }
 }

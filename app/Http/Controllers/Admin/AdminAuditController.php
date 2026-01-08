@@ -27,21 +27,21 @@ class AdminAuditController extends Controller
             request: $request,
             config: [
                 'searchable' => ['event', 'auditable_type', 'user.name'],
-                'sortable' => [
-                    'event' => ['type' => 'simple'],
+                'sortable'   => [
+                    'event'      => ['type' => 'simple'],
                     'created_at' => ['type' => 'simple'],
                 ],
-                'resource' => 'audits',
+                'resource'  => 'audits',
                 'transform' => function ($audit) {
                     return [
-                        'id' => $audit->id,
-                        'event' => $audit->event,
+                        'id'             => $audit->id,
+                        'event'          => $audit->event,
                         'auditable_type' => $audit->auditable_type,
-                        'user_type' => $audit->user_type,
-                        'user_id' => $audit->user_id,
-                        'created_at' => $audit->created_at?->toDateTimeString(),
-                        'user' => [
-                            'id' => $audit->user?->id,
+                        'user_type'      => $audit->user_type,
+                        'user_id'        => $audit->user_id,
+                        'created_at'     => $audit->created_at?->toDateTimeString(),
+                        'user'           => [
+                            'id'   => $audit->user?->id,
                             'name' => $audit->user?->name,
                         ],
                     ];
@@ -50,7 +50,7 @@ class AdminAuditController extends Controller
         );
 
         return inertia('Admin/IndexAuditPage', [
-            'audits' => $result['data'],
+            'audits'  => $result['data'],
             'filters' => $result['filters'],
         ]);
     }

@@ -25,14 +25,13 @@ class AdminHealthStatusController extends Controller
                 'lastRanAt' => $checkResults?->finishedAt
                     ? Carbon::parse($checkResults->finishedAt)->toIso8601String()
                     : null,
-                'results' =>
-                    $checkResults?->storedCheckResults?->map(function ($result) {
+                'results' => $checkResults?->storedCheckResults?->map(function ($result) {
                         return [
-                            'label' => $result->label,
-                            'status' => $result->status,
+                            'label'               => $result->label,
+                            'status'              => $result->status,
                             'notificationMessage' => $result->notificationMessage,
-                            'shortSummary' => $result->shortSummary,
-                            'meta' => collect($result->meta)
+                            'shortSummary'        => $result->shortSummary,
+                            'meta'                => collect($result->meta)
                                 ->only([
                                     'disk_usage',
                                     'message',

@@ -36,13 +36,13 @@ class HandleInertiaRequests extends Middleware
             'auth' => [
                 'user' => $user
                     ? [
-                        'id' => $user->id,
-                        'name' => $user->name,
-                        'email' => $user->email,
-                        'roles' => $user->roles->pluck('name'),
+                        'id'          => $user->id,
+                        'name'        => $user->name,
+                        'email'       => $user->email,
+                        'roles'       => $user->roles->pluck('name'),
                         'permissions' => $user->getAllPermissions()->pluck('name'),
-                        'avatar' => $avatar,
-                        'gravatar' => $gravatar,
+                        'avatar'      => $avatar,
+                        'gravatar'    => $gravatar,
                     ]
                     : null,
             ],
@@ -50,34 +50,34 @@ class HandleInertiaRequests extends Middleware
             'csrf_token' => csrf_token(),
 
             'flash' => [
-                'message' => fn() => $request->session()->get('message'),
-                'success' => fn() => $request->session()->get('success'),
-                'error' => fn() => $request->session()->get('error'),
-                'status' => fn() => $request->session()->get('status'),
-                'warning' => fn() => $request->session()->get('warning'),
-                'info' => fn() => $request->session()->get('info'),
-                'danger' => fn() => $request->session()->get('danger'),
-                'all' => fn() => $request->session()->get('_flash.old', []),
-                'recovery-codes-generated' => fn() => $request->session()->get('recovery-codes-generated'),
-                'two-factor-authentication-enabled' => fn() => $request
+                'message'                           => fn () => $request->session()->get('message'),
+                'success'                           => fn () => $request->session()->get('success'),
+                'error'                             => fn () => $request->session()->get('error'),
+                'status'                            => fn () => $request->session()->get('status'),
+                'warning'                           => fn () => $request->session()->get('warning'),
+                'info'                              => fn () => $request->session()->get('info'),
+                'danger'                            => fn () => $request->session()->get('danger'),
+                'all'                               => fn () => $request->session()->get('_flash.old', []),
+                'recovery-codes-generated'          => fn () => $request->session()->get('recovery-codes-generated'),
+                'two-factor-authentication-enabled' => fn () => $request
                     ->session()
                     ->get('two-factor-authentication-enabled'),
-                'two-factor-authentication-disabled' => fn() => $request
+                'two-factor-authentication-disabled' => fn () => $request
                     ->session()
                     ->get('two-factor-authentication-disabled'),
-                'verification-link-sent' => fn() => $request->session()->get('verification-link-sent'),
-                'profile-information-updated' => fn() => $request->session()->get('profile-information-updated'),
+                'verification-link-sent'      => fn () => $request->session()->get('verification-link-sent'),
+                'profile-information-updated' => fn () => $request->session()->get('profile-information-updated'),
             ],
 
             'settings' => [
-                'appName' => config('app.name'),
-                'passwordlessLogin' => DB::table('settings')->value('passwordless_login') ?? true,
+                'appName'                  => config('app.name'),
+                'passwordlessLogin'        => DB::table('settings')->value('passwordless_login') ?? true,
                 'emailVerificationEnabled' => config('guacpanel.email_verification_enabled'),
-                'notificationEnabled' => config('guacpanel.notifications.enabled'),
-                'notificationInDemoMode' => config('guacpanel.notifications.in_demo'),
+                'notificationEnabled'      => config('guacpanel.notifications.enabled'),
+                'notificationInDemoMode'   => config('guacpanel.notifications.in_demo'),
             ],
 
-            'notifications' => fn() => $this->resolveNotifications($request, 1000, [
+            'notifications' => fn () => $this->resolveNotifications($request, 1000, [
                 'dismissed' => 'undismissed',
             ]),
 
@@ -86,8 +86,8 @@ class HandleInertiaRequests extends Middleware
             ],
 
             'impersonation' => [
-                'active' => session()->has('impersonator_id'),
-                'impersonator_id' => session('impersonator_id'),
+                'active'            => session()->has('impersonator_id'),
+                'impersonator_id'   => session('impersonator_id'),
                 'impersonator_name' => session('impersonator_name'),
             ],
         ]);

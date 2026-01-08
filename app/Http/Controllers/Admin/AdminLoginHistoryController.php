@@ -30,19 +30,19 @@ class AdminLoginHistoryController extends Controller
             request: $request,
             config: [
                 'searchable' => ['user.name', 'user_agent'],
-                'sortable' => [
+                'sortable'   => [
                     'login_at' => ['type' => 'simple'],
                 ],
-                'resource' => 'login_history',
+                'resource'  => 'login_history',
                 'transform' => function ($item) {
                     $agent = new Agent();
                     $agent->setUserAgent($item->user_agent);
 
                     $item->login_at_diff = $item->login_at?->diffForHumans();
                     $item->device_info = [
-                        'device' => $agent->device() ?: 'Unknown',
+                        'device'   => $agent->device() ?: 'Unknown',
                         'platform' => $agent->platform() ?: 'Unknown',
-                        'browser' => $agent->browser() ?: 'Unknown',
+                        'browser'  => $agent->browser() ?: 'Unknown',
                     ];
 
                     $item->status = [
@@ -58,14 +58,14 @@ class AdminLoginHistoryController extends Controller
 
         return Inertia::render('Admin/IndexLoginHistoryPage', [
             'loginHistory' => $result['data'],
-            'filters' => $result['filters'],
+            'filters'      => $result['filters'],
         ]);
     }
 
     public function bulkDestroy(Request $request)
     {
         $request->validate([
-            'ids' => ['required', 'array'],
+            'ids'   => ['required', 'array'],
             'ids.*' => ['required', 'exists:login_history,id'],
         ]);
 

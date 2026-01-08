@@ -21,8 +21,8 @@ class AppNotificationCleanupService
 
         return [
             'deleted' => (int) $deleted,
-            'cutoff' => $cutoff,
-            'days' => $days,
+            'cutoff'  => $cutoff,
+            'days'    => $days,
         ];
     }
 }

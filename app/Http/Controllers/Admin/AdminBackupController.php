@@ -39,7 +39,7 @@ class AdminBackupController extends Controller
         $message =
             $exitCode === 0
                 ? 'Backup completed successfully'
-                : 'Backup failed: ' . ($output ?: $artisanOutput ?: 'Unknown error occurred');
+                : 'Backup failed: '.($output ?: $artisanOutput ?: 'Unknown error occurred');
 
         session()->flash($exitCode === 0 ? 'success' : 'error', $message);
 
@@ -51,19 +51,19 @@ class AdminBackupController extends Controller
         $disk = $this->getDisk();
         $backupName = config('backup.backup.name') ?? env('APP_NAME', 'laravel-backup');
 
-        $files = collect($disk->allFiles($backupName))->filter(fn($file) => str_ends_with($file, '.zip'));
+        $files = collect($disk->allFiles($backupName))->filter(fn ($file) => str_ends_with($file, '.zip'));
 
         if ($files->isEmpty()) {
             return [
                 [
-                    'name' => $backupName,
-                    'disk' => config('backup.backup.destination.disks')[0] ?? 'local',
-                    'storageType' => config('filesystems.disks.local.driver') === 'local' ? 'local' : 'other',
-                    'reachable' => true,
-                    'healthy' => true,
-                    'count' => 0,
+                    'name'         => $backupName,
+                    'disk'         => config('backup.backup.destination.disks')[0] ?? 'local',
+                    'storageType'  => config('filesystems.disks.local.driver') === 'local' ? 'local' : 'other',
+                    'reachable'    => true,
+                    'healthy'      => true,
+                    'count'        => 0,
                     'storageSpace' => $this->formatBytes(0),
-                    'backups' => [],
+                    'backups'      => [],
                 ],
             ];
         }
@@ -74,13 +74,13 @@ class AdminBackupController extends Controller
                 $lastModified = $disk->lastModified($file);
 
                 return [
-                    'path' => $file,
-                    'date' => date('M d, Y g:i A', $lastModified),
-                    'size' => $this->formatBytes($size),
+                    'path'     => $file,
+                    'date'     => date('M d, Y g:i A', $lastModified),
+                    'size'     => $this->formatBytes($size),
                     'raw_size' => $size,
                 ];
             })
-            ->sortByDesc(fn($backup) => strtotime($backup['date']))
+            ->sortByDesc(fn ($backup) => strtotime($backup['date']))
             ->values()
             ->toArray();
 
@@ -88,14 +88,14 @@ class AdminBackupController extends Controller
 
         return [
             [
-                'name' => $backupName,
-                'disk' => config('backup.backup.destination.disks')[0] ?? 'local',
-                'storageType' => config('filesystems.disks.local.driver') === 'local' ? 'local' : 'other',
-                'reachable' => true,
-                'healthy' => true,
-                'count' => count($backups),
+                'name'         => $backupName,
+                'disk'         => config('backup.backup.destination.disks')[0] ?? 'local',
+                'storageType'  => config('filesystems.disks.local.driver') === 'local' ? 'local' : 'other',
+                'reachable'    => true,
+                'healthy'      => true,
+                'count'        => count($backups),
                 'storageSpace' => $this->formatBytes($totalSize),
-                'backups' => array_map(function ($backup) {
+                'backups'      => array_map(function ($backup) {
                     unset($backup['raw_size']);
 
                     return $backup;
@@ -122,7 +122,7 @@ class AdminBackupController extends Controller
             return redirect()->back();
         }
 
-        $filePath = storage_path('app/' . $decodedPath);
+        $filePath = storage_path('app/'.$decodedPath);
 
         if (!file_exists($filePath)) {
             session()->flash('error', 'Backup file not found on disk.');
@@ -157,6 +157,6 @@ class AdminBackupController extends Controller
         $pow = min($pow, count($units) - 1);
         $bytes /= 1 << 10 * $pow;
 
-        return round($bytes, 2) . ' ' . $units[$pow];
+        return round($bytes, 2).' '.$units[$pow];
     }
 }

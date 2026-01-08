@@ -28,7 +28,7 @@ class AppNotificationStateChanged implements ShouldBroadcastNow
 
     public function broadcastOn(): Channel|array
     {
-        return new PrivateChannel('users.' . $this->userId);
+        return new PrivateChannel('users.'.$this->userId);
     }
 
     public function broadcastAs(): string
@@ -39,11 +39,11 @@ class AppNotificationStateChanged implements ShouldBroadcastNow
     public function broadcastWith(): array
     {
         return [
-            'id' => $this->notificationId,
-            'scope' => $this->scope,
-            'read_at' => $this->readAt,
+            'id'           => $this->notificationId,
+            'scope'        => $this->scope,
+            'read_at'      => $this->readAt,
             'dismissed_at' => $this->dismissedAt,
-            'action' => $this->action,
+            'action'       => $this->action,
         ];
     }
 }

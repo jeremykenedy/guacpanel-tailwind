@@ -53,12 +53,12 @@ class AdminAppNotificationsController extends Controller
             request: $request,
             config: [
                 'searchable' => ['title', 'message', 'user.name', 'user.email'],
-                'sortable' => [
-                    'title' => ['type' => 'simple'],
-                    'type' => ['type' => 'simple'],
+                'sortable'   => [
+                    'title'      => ['type' => 'simple'],
+                    'type'       => ['type' => 'simple'],
                     'created_at' => ['type' => 'simple'],
                 ],
-                'resource' => 'notifications',
+                'resource'  => 'notifications',
                 'transform' => function ($item) {
                     $item->created_at_diff = $item->created_at?->diffForHumans();
                     $item->scheduled_on_diff = $item->scheduled_on?->diffForHumans();
@@ -74,7 +74,7 @@ class AdminAppNotificationsController extends Controller
 
         return Inertia::render('Admin/Notifications/IndexNotificationPage', [
             'notifications' => $result['data'],
-            'filters' => $result['filters'],
+            'filters'       => $result['filters'],
         ]);
     }
 
@@ -103,15 +103,15 @@ class AdminAppNotificationsController extends Controller
         $autoExpireOn = !empty($data['auto_expire_on']) ? Carbon::parse($data['auto_expire_on']) : null;
 
         $notification = AppNotification::create([
-            'user_id' => $userId,
-            'created_by' => $request->user()?->id,
-            'scope' => $scope,
-            'type' => $data['type'],
-            'title' => $data['title'],
-            'message' => $data['message'],
-            'data' => null,
-            'scheduled_on' => $scheduledOn,
-            'auto_expire_on' => $autoExpireOn,
+            'user_id'           => $userId,
+            'created_by'        => $request->user()?->id,
+            'scope'             => $scope,
+            'type'              => $data['type'],
+            'title'             => $data['title'],
+            'message'           => $data['message'],
+            'data'              => null,
+            'scheduled_on'      => $scheduledOn,
+            'auto_expire_on'    => $autoExpireOn,
             'sent_as_scheduled' => false,
         ]);
 
@@ -134,7 +134,7 @@ class AdminAppNotificationsController extends Controller
 
         return Inertia::render('Admin/Notifications/EditNotificationPage', [
             'notification' => $notification,
-            'users' => $users,
+            'users'        => $users,
         ]);
     }
 
@@ -152,13 +152,13 @@ class AdminAppNotificationsController extends Controller
 
         $notification
             ->forceFill([
-                'user_id' => $userId,
-                'scope' => $scope,
-                'type' => $data['type'],
-                'title' => $data['title'],
-                'message' => $data['message'],
-                'data' => null,
-                'scheduled_on' => $scheduledOn,
+                'user_id'        => $userId,
+                'scope'          => $scope,
+                'type'           => $data['type'],
+                'title'          => $data['title'],
+                'message'        => $data['message'],
+                'data'           => null,
+                'scheduled_on'   => $scheduledOn,
                 'auto_expire_on' => $autoExpireOn,
             ])
             ->save();
@@ -186,7 +186,7 @@ class AdminAppNotificationsController extends Controller
     public function bulkDestroy(Request $request)
     {
         $data = $request->validate([
-            'ids' => ['required', 'array', 'min:1'],
+            'ids'   => ['required', 'array', 'min:1'],
             'ids.*' => ['string'],
         ]);
 

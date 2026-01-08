@@ -28,10 +28,10 @@ class AdminPermissionRoleController extends Controller
             ->get()
             ->map(function ($permission) {
                 return [
-                    'id' => $permission->id,
-                    'name' => $permission->name,
-                    'description' => $permission->description,
-                    'created_at' => $permission->created_at->diffForHumans(),
+                    'id'           => $permission->id,
+                    'name'         => $permission->name,
+                    'description'  => $permission->description,
+                    'created_at'   => $permission->created_at->diffForHumans(),
                     'is_protected' => $this->isProtectedPermission($permission->name),
                 ];
             });
@@ -40,13 +40,13 @@ class AdminPermissionRoleController extends Controller
         $users = User::all();
 
         return Inertia::render('Admin/PermissionRole/IndexPermissionRolePage', [
-            'permissions' => $permissions,
-            'permissionsList' => $permissions->toArray(),
-            'roles' => $roles,
-            'users' => $users,
-            'protectedRoles' => $this->getProtectedRoles(),
+            'permissions'          => $permissions,
+            'permissionsList'      => $permissions->toArray(),
+            'roles'                => $roles,
+            'users'                => $users,
+            'protectedRoles'       => $this->getProtectedRoles(),
             'protectedPermissions' => $this->getProtectedPermissions(),
-            'filters' => $this->dataTable->buildFilters($request),
+            'filters'              => $this->dataTable->buildFilters($request),
         ]);
     }
 }

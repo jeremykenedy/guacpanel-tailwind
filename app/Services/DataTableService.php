@@ -120,8 +120,8 @@ class DataTableService
         $perPage = $this->resolvePerPageWithDefaults($request, $resourceName, $filteredTotal);
 
         return [
-            'query' => $query,
-            'perPage' => $perPage,
+            'query'         => $query,
+            'perPage'       => $perPage,
             'filteredTotal' => $filteredTotal,
         ];
     }
@@ -147,7 +147,7 @@ class DataTableService
         }
 
         return [
-            'data' => $paginator,
+            'data'    => $paginator,
             'filters' => $this->buildFilters($request),
         ];
     }
@@ -168,7 +168,7 @@ class DataTableService
         if (str_contains($column, '.')) {
             $this->applyRelationshipSearch($query, $column, $search);
         } else {
-            $query->orWhere($column, 'like', '%' . $search . '%');
+            $query->orWhere($column, 'like', '%'.$search.'%');
         }
     }
 
@@ -177,7 +177,7 @@ class DataTableService
         [$relation, $field] = explode('.', $column, 2);
 
         $query->orWhereHas($relation, function ($subQuery) use ($field, $search) {
-            $subQuery->where($field, 'like', '%' . $search . '%');
+            $subQuery->where($field, 'like', '%'.$search.'%');
         });
     }
 
@@ -187,15 +187,15 @@ class DataTableService
 
         match ($type) {
             'relationship' => $this->applyRelationshipFilter($query, $config, $value),
-            'composite' => call_user_func($config['callback'], $query, $value),
-            default => $query->where($filterKey, 'like', '%' . $value . '%'),
+            'composite'    => call_user_func($config['callback'], $query, $value),
+            default        => $query->where($filterKey, 'like', '%'.$value.'%'),
         };
     }
 
     private function applyRelationshipFilter(Builder $query, array $config, mixed $value): void
     {
         $query->whereHas($config['relation'], function ($q) use ($config, $value) {
-            $q->where($config['field'], 'like', '%' . $value . '%');
+            $q->where($config['field'], 'like', '%'.$value.'%');
         });
     }
 
@@ -208,8 +208,8 @@ class DataTableService
     ): Builder {
         match ($type) {
             'relationship' => $this->applyRelationshipSort($query, $config, $sortDirection),
-            'composite' => call_user_func($config['callback'], $query, $sortDirection),
-            default => $query->orderBy($sortField, $sortDirection),
+            'composite'    => call_user_func($config['callback'], $query, $sortDirection),
+            default        => $query->orderBy($sortField, $sortDirection),
         };
 
         return $query;
@@ -219,7 +219,7 @@ class DataTableService
     {
         $query
             ->leftJoin($config['table'], $config['foreign_key'], '=', $config['local_key'])
-            ->select($query->getModel()->getTable() . '.*')
+            ->select($query->getModel()->getTable().'.*')
             ->distinct()
             ->orderBy($config['order_by'], $sortDirection);
     }
